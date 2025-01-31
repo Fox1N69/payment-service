@@ -114,9 +114,13 @@ POST /api/transaction/transfer?from_user_id={id}&to_user_id={id}&amount={amount}
 }
 ```
 
-## Запуск 
-1. Собрать и запустить приложение через Docker:
-   ```sh
-   make build
-   ```
-2. API будет доступно по адресу `http://localhost:4000`
+## Используемые библиотеки
+
+| Library      | Usage          |
+| ------------ | -------------- |
+| gin          | Base framework |
+| pgx          | SQL library    |
+| postgres     | Database       |
+| custom logger| My Logger Setup| 
+| viper        | Config library |
+| wire    | Dependency injection|
