@@ -15,6 +15,55 @@ API платежной системы представляет собой RESTfu
 > make local-run
 > ```
 
+## Структура проекта
+```
+├── cmd
+│   └── payment
+│       └── main.go #точка входа
+├── config 
+├── docker-compose.yaml
+├── go.mod
+├── go.sum
+├── internal
+│   ├── config 
+│   │   ├── config.go
+│   │   └── provider.go
+│   ├── delivery
+│   │   └── http
+│   │       └── handler 
+│   │           ├── provider.go
+│   │           ├── transaction_handler.go
+│   │           └── user_handler.go
+│   ├── domain
+│   │   ├── entity
+│   │   │   ├── transaction.go
+│   │   │   └── user.go
+│   │   └── service
+│   │       ├── provider.go
+│   │       ├── transaction_service.go
+│   │       └── user_service.go
+│   ├── repository
+│   │   ├── provider.go
+│   │   ├── transaction_repository.go
+│   │   └── user_repository.go
+│   └── server
+│       ├── server.go
+│       ├── wire.go
+│       └── wire_gen.go
+├── logs
+│   └── iq-testtask-error.log
+├── migrations
+│   ├── 20250124165437_create_user_table.sql
+│   └── 20250124165452_create_transaction_table.sql
+├── pkg
+│   └── logger
+│       └── logger.go
+└── storage
+    └── postgres
+        ├── postgres.go
+        └── provider.go
+```
+
 ## Базовый URL
 ```
 http://localhost:4000/api
