@@ -78,13 +78,11 @@ func Init(mode string) {
 		panic(fmt.Errorf("failed to create logs directory: %w", err))
 	}
 
-	// Получаем имя текущей директории
 	dir, err := os.Getwd()
 	if err != nil {
 		panic(fmt.Errorf("failed to get current working directory: %w", err))
 	}
 
-	// Формируем имя файла на основе имени директории
 	logFileName := filepath.Join(dir, "logs", fmt.Sprintf("%s-error.log", filepath.Base(dir)))
 
 	allFile, err := os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0640)
