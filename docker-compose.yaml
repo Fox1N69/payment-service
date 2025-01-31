@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: payment_service
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      - MODE=release
+      - SERVER_PORT=:4000
+      - DATABASE_URL=postgres://postgres:8008@db:5432/payment?sslmode=disable
+    ports:
+      - "4000:4000"
+    restart: always
+
+  db:
+    image: postgres:16
+    container_name: payment_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 8008
+      POSTGRES_DB: payment
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d payment"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  migrate:
+    image: golang:1.21
+    container_name: payment_migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint:
+      [
+        "/bin/sh",
+        "-c",
+        "go install github.com/pressly/goose/v3/cmd/goose@latest && goose -dir migrations postgres postgres://postgres:8008@db:5432/payment?sslmode=disable up",
+      ]
+
+volumes:
+  postgres_data:
